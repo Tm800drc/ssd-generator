@@ -22,10 +22,12 @@ import { state } from "./script.js";
 
 const skipNoneIdentified = ["exams", "interactiveTeaching", "librarySupport"];
 const DISCLOSURE_PLACEHOLDER =
-  "Once selected, the disclosure level will automatically be inserted into this section";
+  "Once selected, the disclosure level will automatically be inserted into this section.";
 const GENERAL_PLACEHOLDER_REGEX = /Once selected.*?inserted.*?here/i;
 
 function createParagraph(text, bullet = false) {
+  const trimmed = text?.trim();
+  if (!trimmed || trimmed === ".") return null;
   if (!text?.trim()) return null;
   return new Paragraph({
     children: [new TextRun({ text, font: "Arial", size: 24 })],

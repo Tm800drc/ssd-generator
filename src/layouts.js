@@ -112,7 +112,7 @@ export const layouts = {
         class: "area for support",
         title: "Disclosure Status",
         content:
-          "Once selected, the disclosure level will automatically be inserted into this section",
+          "Once selected, the disclosure level will automatically be inserted into this section.",
       },
 
       dateApproved: {
@@ -238,7 +238,7 @@ export const layouts = {
         class: "area for support",
         title: "Disclosure Status",
         content:
-          "Once selected, the disclosure level will automatically be inserted into this section",
+          "Once selected, the disclosure level will automatically be inserted into this section.",
       },
 
       dateApproved: {
