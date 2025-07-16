@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSD Generator</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" crossorigin src="/ssd-generator/assets/index-BbsMe01N.js"></script>
+    <link rel="stylesheet" crossorigin href="/ssd-generator/assets/index-CeKK7m7-.css">
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- Sidebar for user input -->
+      <aside id="sidebar">
+        <section id="study-method-choice">
+          <h2>Study Method</h2>
+          <fieldset>
+            <legend>Select the course type:</legend>
+            <div class="option-group">
+              <label>
+                <input type="radio" name="method" value="Taught" />
+                Taught
+              </label>
+              <label>
+                <input type="radio" name="method" value="Research" />
+                Research
+              </label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section id="disclosure-choice">
+          <h2>Disclosure Status</h2>
+          <fieldset>
+            <legend>What disclosure level has the student consented to?</legend>
+            <div class="option-group">
+              <label>
+                <input type="radio" name="disclosure" value="Full" />
+                Full Disclosure
+              </label>
+              <label>
+                <input type="radio" name="disclosure" value="University" />
+                Restricted: University
+              </label>
+              <label>
+                <input type="radio" name="disclosure" value="College" />
+                Restricted: College
+              </label>
+              <label>
+                <input type="radio" name="disclosure" value="ADRC" />
+                Restricted: ADRC Only
+              </label>
+              <label>
+                <input type="radio" name="disclosure" value="Other" />
+                Restricted: Other
+              </label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section id="disability-type-selector">
+          <h2>Disability Type</h2>
+          <fieldset>
+            <legend>Select the type of disability:</legend>
+            <div class="option-group">
+              <label>
+                <input type="checkbox" name="disability" value="51-ADHD" />
+                ADHD
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="53" />
+                Autism
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="57" />
+                Hearing Impairment
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="54" />
+                Long Term Condition
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="55" />
+                Mental Health
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="56" />
+                Physical Disability
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="51" />
+                SpLD
+              </label>
+              <label>
+                <input type="checkbox" name="disability" value="58" />
+                Visual Impairment
+              </label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section id="support-options">
+          <h2>Support Options</h2>
+          <div id="support-options-container"></div>
+        </section>
+      </aside>
+
+      <!-- Preview Area -->
+      <main id="doc-content">
+        <div class="preview-container">
+          <div class="preview-paper preview-empty">
+            <img
+              src="/ssd-generator/logo.png"
+              alt="Cambridge University Accessibility and Disability Resource Centre Logo"
+              class="logo"
+            />
+
+            <!-- Only this part will be dynamically filled -->
+            <div id="doc-output">
+              <p class="placeholder-message">
+                SSD Document Preview
+                <br />
+                Will Display Here
+              </p>
+            </div>
+          </div>
+
+          <button id="download-doc">Download</button>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
