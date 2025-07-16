@@ -43,21 +43,35 @@ function createParagraph(text, bullet = false) {
 }
 
 function parseHtmlToParagraphs(html, bullet = false) {
+  console.log("📄 parseHtmlToParagraphs input:", html);
+
   const liRegex = /<li[^>]*>(.*?)<\/li>/gis;
   const lis = [...html.matchAll(liRegex)];
+
+  // If it contains list items, parse each <li>
   if (lis.length > 0) {
     return lis
-      .map((match) =>
-        createParagraph(match[1].replace(/<[^>]+>/g, "").trim(), true)
-      )
-      .filter(Boolean);
+      .map((match) => {
+        let content = match[1]
+          ?.replace(/<[^>]+>/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+        console.log("  → list item:", content);
+        return createParagraph(content, true);
+      })
+      .filter(Boolean); // filter out null/invalid paragraphs
   }
 
+  // Otherwise, treat it as plain HTML content
   const plain = html.replace(/<[^>]+>/g, "").trim();
   return plain
     .split(/\n|\r/)
-    .map((line) => createParagraph(line.trim(), bullet))
-    .filter(Boolean);
+    .map((line) => {
+      const cleaned = line.replace(/\s+/g, " ").trim();
+      console.log("  → plain line:", cleaned);
+      return createParagraph(cleaned, bullet);
+    })
+    .filter(Boolean); // remove nulls
 }
 
 function createStructuredParagraphs(option) {
