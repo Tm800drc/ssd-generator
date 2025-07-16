@@ -70,6 +70,7 @@ function createStructuredParagraphs(option) {
               bold: true,
             }),
           ],
+          indent: { left: 360 },
           spacing: { after: 100 },
         });
       }
@@ -125,7 +126,7 @@ async function generateDocx() {
             new TextRun({
               text: section.title,
               font: "Arial",
-              size: 28,
+              size: 24,
               bold: true,
             }),
           ],
@@ -148,7 +149,8 @@ async function generateDocx() {
           content.push(...paras);
           insertedCount += paras.length;
         } else {
-          const para = createParagraph(opt.text, true);
+          const isDisclosure = sectionId === "disclosure";
+          const para = createParagraph(opt.text, !isDisclosure ? true : false);
           if (para) {
             content.push(para);
             insertedCount++;
@@ -158,7 +160,7 @@ async function generateDocx() {
 
       const hasOnlyPlaceholder =
         hasPlaceholder &&
-        layoutText.trim().replace(GENERAL_PLACEHOLDER_REGEX, "").trim() === "";
+        !layoutText.replace(GENERAL_PLACEHOLDER_REGEX, "").match(/\w{3,}/);
 
       if (
         insertedCount === 0 &&
