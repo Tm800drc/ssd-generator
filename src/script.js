@@ -5,7 +5,6 @@ import { supportOptions } from "./supportOptions.js";
 import { disclosureLevels } from "./disclosureLevels.js";
 import { disabilityLabels } from "./disabilityLabels.js";
 import { layouts } from "./layouts.js";
-import { generateDocx } from "./docGenerator.js";
 
 const state = {
   studyMethod: null,

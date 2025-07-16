@@ -26,11 +26,17 @@ const DISCLOSURE_PLACEHOLDER =
 const GENERAL_PLACEHOLDER_REGEX = /Once selected.*?inserted.*?here/i;
 
 function createParagraph(text, bullet = false) {
-  const trimmed = text?.replace(/&nbsp;/gi, "").trim();
-  if (!trimmed || trimmed === "." || trimmed === "•") return null;
-  if (/^\W{1,2}$/.test(trimmed)) return null; // rejects things like ".", "*", "-", etc.
+  const cleaned = text
+    ?.replace(/&nbsp;/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Skip if empty or only punctuation
+  if (!cleaned || cleaned.length < 2 || /^[.·•\-–—*]+$/.test(cleaned))
+    return null;
+
   return new Paragraph({
-    children: [new TextRun({ text: trimmed, font: "Arial", size: 24 })],
+    children: [new TextRun({ text: cleaned, font: "Arial", size: 24 })],
     bullet: bullet ? { level: 0 } : undefined,
     spacing: { after: 100 },
   });
