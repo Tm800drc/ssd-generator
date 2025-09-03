@@ -13,6 +13,7 @@ import {
   PageOrientation,
   VerticalAlign,
   convertMillimetersToTwip,
+  ExternalHyperlink,
 } from "docx";
 
 import { layouts } from "./layouts.js";
@@ -24,6 +25,20 @@ const skipNoneIdentified = ["exams", "interactiveTeaching", "librarySupport"];
 const DISCLOSURE_PLACEHOLDER =
   "Once selected, the disclosure level will automatically be inserted into this section.";
 const GENERAL_PLACEHOLDER_REGEX = /Once selected.*?inserted.*?here/i;
+
+function createExternalHyperlink(text, url) {
+  return new ExternalHyperlink({
+    link: url,
+    children: [
+      new TextRun({
+        text,
+        style: "Hyperlink",
+        font: "Arial",
+        size: 24,
+      }),
+    ],
+  });
+}
 
 function createParagraph(text, bullet = false) {
   const cleaned = text
@@ -43,7 +58,8 @@ function createParagraph(text, bullet = false) {
 }
 
 function parseHtmlToParagraphs(html, bullet = false) {
-  console.log("📄 parseHtmlToParagraphs input:", html);
+  const DEBUG = false;
+  if (DEBUG) console.log("parseHtmlToParagraphs input:", html);
 
   const liRegex = /<li[^>]*>(.*?)<\/li>/gis;
   const lis = [...html.matchAll(liRegex)];
@@ -273,7 +289,31 @@ async function generateDocx() {
             size: { orientation: PageOrientation.PORTRAIT },
           },
         },
-        children: [table],
+
+        children: [
+          table,
+          new Paragraph(""), // spacer line
+
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: "For advice on reasonable adjustments and ",
+                font: "Arial",
+                size: 24,
+              }),
+              // Insert guidance on inclusive teaching with external hyperlink
+              createExternalHyperlink(
+                "delivering inclusive teaching and learning",
+                "https://www.disability.admin.cam.ac.uk/working-disabled-students/inclusive-teaching-and-learning"
+              ),
+              new TextRun({
+                text: ", please contact the student's named Disability Adviser.",
+                font: "Arial",
+                size: 24,
+              }),
+            ],
+          }),
+        ],
       },
     ],
   });
