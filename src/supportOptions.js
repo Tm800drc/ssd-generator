@@ -766,7 +766,8 @@ export const supportOptions = [
 
   {
     id: "lip_reading_position_small",
-    label: "Position yourself so the student can lip read",
+    label:
+      "(For small group teaching) - Position yourself so the student can lip read",
     text: "Maintain a position so that the student can lip-read and keep hands and objects away from your face so that facial expressions can be clearly seen. Please ensure you have the student's attention before speaking to them.",
     categories: ["57"],
     studyMethods: ["Taught", "Research"],
@@ -797,7 +798,7 @@ export const supportOptions = [
   {
     id: "one_speaker",
     label:
-      "(For small group teaching) Moderate group discussion to amke them accessible to a d/Deaf person.",
+      "(For small group teaching) Moderate group discussion to make them accessible to a d/Deaf person.",
     text: "Group discussions will need to be more closely moderated to ensure it is accessible to a d/Deaf person. Try to ensure that only one person is speaking at a time, control the pace of discussion depending on the size of the group and reiterate comments from group members.",
     categories: ["57"],
     studyMethods: ["Taught", "Research"],

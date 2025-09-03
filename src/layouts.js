@@ -60,9 +60,7 @@ export const layouts = {
         title: "Libraries",
         content: `Once selected, support recommendations will automatically be inserted here.
 
-                <ul> 
-                  <li> Extended library loans. </li>      
-                
+                <ul>               
                   <li>Upgraded Library Status (including Increased Borrowing Limit and Extended Loans as applicable in each library).</li>
                 
                   <li>The Libraries Accessibility Team is available to assist students registered with the ADRC. </li>
