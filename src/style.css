@@ -273,10 +273,6 @@ label.support-option:has(input.enhanced-adjustment) {
   line-height: 1.5;
 }
 
-#doc-output .doc-section.generalRecommendations,
-.preview-paper .doc-section.generalRecommendations {
-  background: #b9beee;
-  padding: 1rem;
-  border-radius: 6px;
-  margin: 0.5rem 0;
+.general-recommendations-section {
+  background-color: aliceblue;
 }

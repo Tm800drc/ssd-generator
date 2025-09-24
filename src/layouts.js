@@ -9,6 +9,7 @@ export const layouts = {
       },
 
       generalRecommendations: {
+        class: "general-recommendations-section",
         content: `Timetables and assignment deadlines provided in advance prior to the start of each term.
 
                 Directed Reading lists provided in advance.
@@ -136,6 +137,7 @@ export const layouts = {
       },
 
       generalRecommendations: {
+        class: "general-recommendations-section",
         content: `Timetables and assignment deadlines provided in advance prior to the start of each term.
 
                 Directed Reading lists provided in advance.

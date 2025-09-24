@@ -160,6 +160,7 @@ async function generateDocx() {
 
   for (const [sectionId, section] of Object.entries(layout.sections)) {
     const isHeader = sectionId.toLowerCase().includes("header");
+    const isGeneralRecommendations = sectionId === "generalRecommendations";
     const useBulletForLayout = [
       "generalRecommendations",
       "librarySupport",
@@ -250,7 +251,11 @@ async function generateDocx() {
             new TableCell({
               children: validContent,
               verticalAlign: VerticalAlign.CENTER,
-              shading: isHeader ? { fill: "D9D9D9" } : undefined,
+              shading: isHeader
+                ? { fill: "D9D9D9" }
+                : isGeneralRecommendations
+                ? { fill: "E6F0FA" }
+                : undefined,
               borders: {
                 bottom: { style: BorderStyle.SINGLE, size: 2, color: "AAAAAA" },
               },

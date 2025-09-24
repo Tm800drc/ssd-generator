@@ -306,7 +306,7 @@ function renderPreview() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+/* document.addEventListener("DOMContentLoaded", () => {
   const downloadBtn = document.getElementById("download-doc");
   if (downloadBtn) {
     downloadBtn.addEventListener("click", () => {
@@ -317,6 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
+}); */
 
 export { state };
