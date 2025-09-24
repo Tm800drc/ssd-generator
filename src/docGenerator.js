@@ -57,6 +57,50 @@ function createParagraph(text, bullet = false) {
   });
 }
 
+// Updated: now supports "heading" type
+function createStructuredParagraphs(option) {
+  if (!Array.isArray(option.structuredText)) return [];
+
+  return option.structuredText
+    .map((block) => {
+      if (!block?.content?.trim()) return null;
+      if (block.type === "heading") {
+        // Headings: bigger, bold, extra spacing
+        return new Paragraph({
+          children: [
+            new TextRun({
+              text: block.content,
+              font: "Arial",
+              size: 24, // 14pt
+              bold: true,
+            }),
+          ],
+          spacing: { after: 200, before: 100 },
+        });
+      } else if (block.type === "subsection") {
+        // Subsections: bold, indented
+        return new Paragraph({
+          children: [
+            new TextRun({
+              text: block.content,
+              font: "Arial",
+              size: 24,
+              bold: true,
+            }),
+          ],
+          indent: { left: 360 },
+          spacing: { after: 100 },
+        });
+      } else if (block.type === "bullet") {
+        // Bullets
+        return createParagraph(block.content, true);
+      }
+      // Add more types here if needed
+      return null;
+    })
+    .filter(Boolean);
+}
+
 function parseHtmlToParagraphs(html, bullet = false) {
   const DEBUG = false;
   if (DEBUG) console.log("parseHtmlToParagraphs input:", html);
@@ -72,7 +116,6 @@ function parseHtmlToParagraphs(html, bullet = false) {
           ?.replace(/<[^>]+>/g, "")
           .replace(/\s+/g, " ")
           .trim();
-        console.log("  → list item:", content);
         return createParagraph(content, true);
       })
       .filter(Boolean); // filter out null/invalid paragraphs
@@ -84,37 +127,9 @@ function parseHtmlToParagraphs(html, bullet = false) {
     .split(/\n|\r/)
     .map((line) => {
       const cleaned = line.replace(/\s+/g, " ").trim();
-      console.log("  → plain line:", cleaned);
       return createParagraph(cleaned, bullet);
     })
     .filter(Boolean); // remove nulls
-}
-
-function createStructuredParagraphs(option) {
-  if (!Array.isArray(option.structuredText)) return [];
-
-  return option.structuredText
-    .map((block) => {
-      if (!block?.content?.trim()) return null;
-      if (block.type === "bullet") {
-        return createParagraph(block.content, true);
-      } else if (block.type === "subsection") {
-        return new Paragraph({
-          children: [
-            new TextRun({
-              text: block.content,
-              font: "Arial",
-              size: 24,
-              bold: true,
-            }),
-          ],
-          indent: { left: 360 },
-          spacing: { after: 100 },
-        });
-      }
-      return null;
-    })
-    .filter(Boolean);
 }
 
 async function generateDocx() {
@@ -145,9 +160,10 @@ async function generateDocx() {
 
   for (const [sectionId, section] of Object.entries(layout.sections)) {
     const isHeader = sectionId.toLowerCase().includes("header");
-    const useBulletForLayout = ["generalRecommendations", "library"].includes(
-      sectionId
-    );
+    const useBulletForLayout = [
+      "generalRecommendations",
+      "librarySupport",
+    ].includes(sectionId);
     const supportItems = selectedMap[sectionId] || [];
     const layoutText = section.content || "";
     const isDisclosure = sectionId === "disclosure";
@@ -187,7 +203,6 @@ async function generateDocx() {
           content.push(...paras);
           insertedCount += paras.length;
         } else {
-          const isDisclosure = sectionId === "disclosure";
           const para = createParagraph(opt.text, !isDisclosure ? true : false);
           if (para) {
             content.push(para);
@@ -259,6 +274,16 @@ async function generateDocx() {
   });
 
   const doc = new Document({
+    styles: {
+      default: {
+        document: {
+          run: {
+            font: "Arial",
+            size: 24,
+          },
+        },
+      },
+    },
     sections: [
       {
         headers: {

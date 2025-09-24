@@ -502,16 +502,6 @@ export const supportOptions = [
   },
 
   {
-    id: "online_rest_break",
-    label:
-      "(For online teaching) The student may request to record the session. Please check that all participants have consented.",
-    text: "The student may request to record the session. Please check that all participants have consented.",
-    categories: ["56"],
-    studyMethods: ["Taught", "Research"],
-    targetSection: "onlineTeaching",
-  },
-
-  {
     id: "word_documents",
     label:
       "(For online teaching) Ensure documents are Word documents that have been set up with proper headings, titles and tables.",
