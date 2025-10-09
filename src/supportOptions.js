@@ -29,7 +29,7 @@ export const supportOptions = [
   },
 
   {
-    id: "excused_abscences",
+    id: "excused_absences",
     label:
       "Student may be unable to attend, or need a short break, from some sessions.",
     text: "There may be times when the student is unable to attend a session for disability-related reasons or may need to take a short break during a session and may need to clarify work missed.",
@@ -176,7 +176,7 @@ export const supportOptions = [
   },
 
   {
-    id: "assisstive_technology",
+    id: "assistive_technology",
     class: "enhanced-adjustment",
     label: "Use of computer with assistive technology.",
     text: "Use of computer with assistive technology",
@@ -219,8 +219,8 @@ export const supportOptions = [
 
   {
     id: "extensions",
-    label: "Extended deadlines when feasible and appropiate.",
-    text: "Extended deadlines when feasible and appropiate.",
+    label: "Extended deadlines when feasible and appropriate.",
+    text: "Extended deadlines when feasible and appropriate.",
     categories: ["51-ADHD", "53", "57", "54", "55", "56", "51", "58"],
     studyMethods: ["Taught"],
     targetSection: "exams",
@@ -291,7 +291,7 @@ export const supportOptions = [
     id: "presentations",
     class: "enhanced-adjustment",
     label:
-      "Presenation adjustment suggestions for ND and as an enhanced adjustment for MH.",
+      "Presentation adjustment suggestions for ND and as an enhanced adjustment for MH.",
     structuredText: [
       {
         type: "heading",
@@ -845,7 +845,7 @@ export const supportOptions = [
   },
 
   {
-    id: "small_excused_abscences",
+    id: "small_excused_absences",
     label:
       "(For small group teaching) Student may be unable to attend, or need a short break, from some sessions.",
     text: "There may be times when the student is unable to attend a session for disability-related reasons or may need to take a short break during a session and may need to clarify work missed.",
@@ -1508,7 +1508,7 @@ export const supportOptions = [
     id: "training",
     class: "enhanced-adjustment",
     label:
-      "Schedule time to go through the Researcher Development assessment tool and help the studen set/follow goals.",
+      "Schedule time to go through the Researcher Development assessment tool and help the student set/follow goals.",
     structuredText: [
       { type: "subsection", content: "Training" },
       {
