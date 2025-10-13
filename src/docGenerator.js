@@ -327,11 +327,10 @@ async function generateDocx() {
           new Paragraph({
             children: [
               new TextRun({
-                text: "For advice on reasonable adjustments and ",
+                text: "Please adhere to the recommendations contained in the Code of Practice for Disabled Students, including the guidance on responsibilities around the implementation of adjustments. For advice on reasonable adjustments and ",
                 font: "Arial",
                 size: 24,
               }),
-              // Insert guidance on inclusive teaching with external hyperlink
               createExternalHyperlink(
                 "delivering inclusive teaching and learning",
                 "https://www.disability.admin.cam.ac.uk/working-disabled-students/inclusive-teaching-and-learning"
