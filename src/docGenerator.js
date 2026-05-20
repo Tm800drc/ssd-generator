@@ -3,6 +3,7 @@ import {
   Packer,
   Paragraph,
   TextRun,
+  ImageRun,
   Table,
   TableRow,
   TableCell,
@@ -156,6 +157,49 @@ async function generateDocx() {
     });
   }
 
+  const logoUrl = `${import.meta.env.BASE_URL}logo.jpg`;
+  const logoBlob = await fetch(logoUrl).then((res) => {
+    if (!res.ok) throw new Error(`Failed to load logo: ${res.status}`);
+    return res.blob();
+  });
+  const logoArrayBuffer = await logoBlob.arrayBuffer();
+
+  let logoWidth = 240;
+  let logoHeight = 240;
+  try {
+    const bitmap = await (typeof createImageBitmap === "function"
+      ? createImageBitmap(logoBlob)
+      : new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            resolve(img);
+            URL.revokeObjectURL(img.src);
+          };
+          img.onerror = reject;
+          img.src = URL.createObjectURL(logoBlob);
+        }));
+
+    const naturalWidth = bitmap.width;
+    const naturalHeight = bitmap.height;
+    if (naturalWidth && naturalHeight) {
+      const aspect = naturalWidth / naturalHeight;
+      const maxLogoSize = 240;
+      if (aspect >= 1) {
+        logoWidth = maxLogoSize;
+        logoHeight = Math.round(maxLogoSize / aspect);
+      } else {
+        logoHeight = maxLogoSize;
+        logoWidth = Math.round(maxLogoSize * aspect);
+      }
+    }
+
+    if (typeof bitmap.close === "function") {
+      bitmap.close();
+    }
+  } catch (imageError) {
+    console.warn("Could not read logo dimensions, using square fallback", imageError);
+  }
+
   const rows = [];
 
   for (const [sectionId, section] of Object.entries(layout.sections)) {
@@ -294,16 +338,67 @@ async function generateDocx() {
         headers: {
           default: new Header({
             children: [
-              new Paragraph({
-                alignment: AlignmentType.RIGHT,
-                children: [
-                  new TextRun({
-                    text: "Student Support Document",
-                    font: "Arial",
-                    size: 40,
-                    bold: false,
+              new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: [
+                  new TableRow({
+                    children: [
+                      new TableCell({
+                        children: [
+                          new Paragraph({
+                            children: [
+                              new ImageRun({
+                                type: "jpg",
+                                data: logoArrayBuffer,
+                                transformation: { width: logoWidth, height: logoHeight },
+                              }),
+                            ],
+                            spacing: { after: 0 },
+                          }),
+                        ],
+                        verticalAlign: VerticalAlign.CENTER,
+                        width: { size: 30, type: WidthType.PERCENTAGE },
+                        borders: {
+                          top: { style: BorderStyle.NONE },
+                          bottom: { style: BorderStyle.NONE },
+                          left: { style: BorderStyle.NONE },
+                          right: { style: BorderStyle.NONE },
+                        },
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph({
+                            alignment: AlignmentType.RIGHT,
+                            children: [
+                              new TextRun({
+                                text: "Student Support Document",
+                                font: "Arial",
+                                size: 40,
+                                bold: false,
+                              }),
+                            ],
+                          }),
+                        ],
+                        verticalAlign: VerticalAlign.CENTER,
+                        width: { size: 70, type: WidthType.PERCENTAGE },
+                        borders: {
+                          top: { style: BorderStyle.NONE },
+                          bottom: { style: BorderStyle.NONE },
+                          left: { style: BorderStyle.NONE },
+                          right: { style: BorderStyle.NONE },
+                        },
+                      }),
+                    ],
                   }),
                 ],
+                borders: {
+                  top: { style: BorderStyle.NONE },
+                  bottom: { style: BorderStyle.NONE },
+                  left: { style: BorderStyle.NONE },
+                  right: { style: BorderStyle.NONE },
+                  insideHorizontal: { style: BorderStyle.NONE },
+                  insideVertical: { style: BorderStyle.NONE },
+                },
               }),
             ],
           }),
@@ -350,10 +445,13 @@ async function generateDocx() {
   const blob = await Packer.toBlob(doc);
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
+  a.style.display = "none";
   a.href = url;
   a.download = "Student_Support_Document.docx";
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 export { generateDocx };
