@@ -133,6 +133,95 @@ function parseHtmlToParagraphs(html, bullet = false) {
     .filter(Boolean); // remove nulls
 }
 
+function normalizeSupportContent(text) {
+  return text?.replace(/\s+/g, " ").trim();
+}
+
+function mergeStructuredSectionItems(options) {
+  const groups = [];
+  const headingIndex = new Map();
+  const rootGroup = {
+    key: "__root__",
+    heading: "",
+    type: "root",
+    bullets: [],
+    bulletSet: new Set(),
+  };
+
+  groups.push(rootGroup);
+  let currentGroup = rootGroup;
+
+  options.forEach((opt) => {
+    const entries = opt.structuredText
+      ? opt.structuredText
+      : [{ type: "bullet", content: opt.text }];
+
+    entries.forEach((entry) => {
+      if (entry.type === "heading" || entry.type === "subsection") {
+        const heading = normalizeSupportContent(entry.content);
+        if (!heading) return;
+
+        const key = heading.toLowerCase();
+        let group = headingIndex.get(key);
+        if (!group) {
+          group = {
+            key,
+            heading,
+            type: entry.type,
+            bullets: [],
+            bulletSet: new Set(),
+          };
+          headingIndex.set(key, group);
+          groups.push(group);
+        }
+        currentGroup = group;
+      } else if (entry.type === "bullet") {
+        const content = normalizeSupportContent(entry.content);
+        if (!content) return;
+
+        if (!currentGroup.bulletSet.has(content)) {
+          currentGroup.bulletSet.add(content);
+          currentGroup.bullets.push(content);
+        }
+      }
+    });
+  });
+
+  return groups;
+}
+
+function createMergedSectionParagraphs(options) {
+  if (!options || options.length === 0) return [];
+  const groups = mergeStructuredSectionItems(options);
+  const paragraphs = [];
+
+  groups.forEach((group) => {
+    if (group.type !== "root") {
+      paragraphs.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: group.heading,
+              font: "Arial",
+              size: 24,
+              bold: true,
+            }),
+          ],
+          indent: group.type === "subsection" ? { left: 360 } : undefined,
+          spacing: { after: 100, before: group.type === "subsection" ? 0 : 100 },
+        })
+      );
+    }
+
+    group.bullets.forEach((bullet) => {
+      const para = createParagraph(bullet, true);
+      if (para) paragraphs.push(para);
+    });
+  });
+
+  return paragraphs;
+}
+
 function formatDownloadDate() {
   const now = new Date();
   const day = String(now.getDate()).padStart(2, "0");
@@ -295,19 +384,9 @@ async function generateDocx() {
       );
       content.push(...parseHtmlToParagraphs(before, useBulletForLayout));
 
-      for (const opt of supportItems) {
-        if (opt.structuredText) {
-          const paras = createStructuredParagraphs(opt);
-          content.push(...paras);
-          insertedCount += paras.length;
-        } else {
-          const para = createParagraph(opt.text, !isDisclosure ? true : false);
-          if (para) {
-            content.push(para);
-            insertedCount++;
-          }
-        }
-      }
+      const mergedSectionParagraphs = createMergedSectionParagraphs(supportItems);
+      content.push(...mergedSectionParagraphs);
+      insertedCount += mergedSectionParagraphs.length;
 
       const hasOnlyPlaceholder =
         hasPlaceholder &&
@@ -325,19 +404,9 @@ async function generateDocx() {
     } else {
       content.push(...parseHtmlToParagraphs(layoutText, useBulletForLayout));
 
-      for (const opt of supportItems) {
-        if (opt.structuredText) {
-          const paras = createStructuredParagraphs(opt);
-          content.push(...paras);
-          insertedCount += paras.length;
-        } else {
-          const para = createParagraph(opt.text, !isDisclosure);
-          if (para) {
-            content.push(para);
-            insertedCount++;
-          }
-        }
-      }
+      const mergedSectionParagraphs = createMergedSectionParagraphs(supportItems);
+      content.push(...mergedSectionParagraphs);
+      insertedCount += mergedSectionParagraphs.length;
     }
 
     const validContent = content.filter((p) => p instanceof Paragraph);

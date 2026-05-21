@@ -181,6 +181,82 @@ function renderSupportOptions() {
   }
 }
 
+function normalizeSupportContent(text) {
+  return text?.replace(/\s+/g, " ").trim();
+}
+
+function mergeStructuredSectionItems(options) {
+  const groups = [];
+  const headingIndex = new Map();
+  const rootGroup = {
+    key: "__root__",
+    heading: "",
+    type: "root",
+    bullets: [],
+    bulletSet: new Set(),
+  };
+
+  groups.push(rootGroup);
+  let currentGroup = rootGroup;
+
+  options.forEach((opt) => {
+    const entries = opt.structuredText
+      ? opt.structuredText
+      : [{ type: "bullet", content: opt.text }];
+
+    entries.forEach((entry) => {
+      if (entry.type === "heading" || entry.type === "subsection") {
+        const heading = normalizeSupportContent(entry.content);
+        if (!heading) return;
+
+        const key = heading.toLowerCase();
+        let group = headingIndex.get(key);
+        if (!group) {
+          group = {
+            key,
+            heading,
+            type: entry.type,
+            bullets: [],
+            bulletSet: new Set(),
+          };
+          headingIndex.set(key, group);
+          groups.push(group);
+        }
+        currentGroup = group;
+      } else if (entry.type === "bullet") {
+        const content = normalizeSupportContent(entry.content);
+        if (!content) return;
+
+        if (!currentGroup.bulletSet.has(content)) {
+          currentGroup.bulletSet.add(content);
+          currentGroup.bullets.push(content);
+        }
+      }
+    });
+  });
+
+  return groups;
+}
+
+function buildMergedSectionHtml(options) {
+  if (!options || options.length === 0) return "";
+  const groups = mergeStructuredSectionItems(options);
+  let html = "";
+
+  groups.forEach((group) => {
+    if (group.type !== "root") {
+      html += `<div class="support-heading">${group.heading}</div>`;
+    }
+    if (group.bullets.length) {
+      html += `<ul class="support-bullets">${group.bullets
+        .map((bullet) => `<li>${bullet}</li>`)
+        .join("")}</ul>`;
+    }
+  });
+
+  return html;
+}
+
 function renderPreview() {
   const outputContainer = document.getElementById("doc-output");
   outputContainer.innerHTML = "";
@@ -199,45 +275,12 @@ function renderPreview() {
   );
   document.querySelector(".preview-paper").classList.remove("preview-empty");
 
-  // Map section ID → array of HTML strings (support text)
-  const sectionTextMap = {};
+  const sectionOptions = {};
   selectedOptions.forEach((opt) => {
-    if (!sectionTextMap[opt.targetSection]) {
-      sectionTextMap[opt.targetSection] = [];
+    if (!sectionOptions[opt.targetSection]) {
+      sectionOptions[opt.targetSection] = [];
     }
-
-    // Handle structured text (e.g. heading, bullet, etc)
-    if (opt.structuredText) {
-      let structuredHtml = "";
-      let bulletBuffer = [];
-
-      opt.structuredText.forEach((entry, idx) => {
-        if (entry.type === "heading" || entry.type === "subsection") {
-          // Flush any previous bullet buffer
-          if (bulletBuffer.length) {
-            structuredHtml += `<ul class="support-bullets">${bulletBuffer.join(
-              ""
-            )}</ul>`;
-            bulletBuffer = [];
-          }
-          structuredHtml += `<div class="support-heading">${entry.content}</div>`;
-        } else if (entry.type === "bullet") {
-          bulletBuffer.push(`<li>${entry.content}</li>`);
-        }
-      });
-
-      // Flush remaining bullets
-      if (bulletBuffer.length) {
-        structuredHtml += `<ul class="support-bullets">${bulletBuffer.join(
-          ""
-        )}</ul>`;
-      }
-
-      sectionTextMap[opt.targetSection].push(structuredHtml);
-    } else {
-      // Simple text becomes a bullet
-      sectionTextMap[opt.targetSection].push(`<li>${opt.text}</li>`);
-    }
+    sectionOptions[opt.targetSection].push(opt);
   });
 
   // Loop through layout sections and build HTML
@@ -277,9 +320,8 @@ function renderPreview() {
     }
 
     // Replace support placeholder or "None identified"
-    if (sectionTextMap[sectionId]) {
-      const supportHtml = sectionTextMap[sectionId].join("");
-
+    const supportHtml = buildMergedSectionHtml(sectionOptions[sectionId]);
+    if (supportHtml) {
       if (
         content.includes(
           "Once selected, support recommendations will automatically be inserted here."
@@ -287,13 +329,13 @@ function renderPreview() {
       ) {
         content = content.replace(
           "Once selected, support recommendations will automatically be inserted here.",
-          `<ul>${supportHtml}</ul>`
+          supportHtml
         );
       } else if (content.trim() === "None identified") {
-        content = `<ul>${supportHtml}</ul>`;
+        content = supportHtml;
       } else {
         // Append support text if no placeholder
-        content += `<ul>${supportHtml}</ul>`;
+        content += supportHtml;
       }
     }
 
