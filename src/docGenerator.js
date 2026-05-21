@@ -133,6 +133,14 @@ function parseHtmlToParagraphs(html, bullet = false) {
     .filter(Boolean); // remove nulls
 }
 
+function formatDownloadDate() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = String(now.getFullYear() % 100).padStart(2, "0");
+  return `${day}/${month}/${year}`;
+}
+
 async function generateDocx() {
   const layout = layouts[state.studyMethod];
   const selectedMap = {};
@@ -219,22 +227,67 @@ async function generateDocx() {
     const content = [];
 
     if (section.title) {
-      content.push(
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: section.title,
-              font: "Arial",
-              size: 24,
-              bold: true,
-            }),
-          ],
-          spacing: { after: 100 },
-        })
-      );
+      if (sectionId === "dateApproved") {
+        content.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: section.title,
+                font: "Arial",
+                size: 24,
+                bold: true,
+              }),
+              new TextRun({
+                text: formatDownloadDate(),
+                font: "Arial",
+                size: 24,
+                bold: false,
+              }),
+            ],
+            spacing: { after: 100 },
+          })
+        );
+      } else {
+        content.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: section.title,
+                font: "Arial",
+                size: 24,
+                bold: true,
+              }),
+            ],
+            spacing: { after: 100 },
+          })
+        );
+      }
     }
 
     let insertedCount = 0;
+
+    if (sectionId === "dateApproved") {
+      // The date is already rendered with the section title. Skip any further content processing.
+      rows.push(
+        new TableRow({
+          children: [
+            new TableCell({
+              children: content,
+              verticalAlign: VerticalAlign.CENTER,
+              shading: isHeader
+                ? { fill: "D9D9D9" }
+                : isGeneralRecommendations
+                ? { fill: "E6F0FA" }
+                : undefined,
+              borders: {
+                bottom: { style: BorderStyle.SINGLE, size: 2, color: "AAAAAA" },
+              },
+            }),
+          ],
+        })
+      );
+      continue;
+    }
 
     if (hasPlaceholder) {
       const [before = "", after = ""] = layoutText.split(
