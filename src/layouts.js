@@ -252,4 +252,136 @@ export const layouts = {
       },
     },
   },
+
+  "PGCE": {
+    title: "PGCE Specific Template",
+
+    sections: {
+      generalRecommendationsHeader: {
+        class: "layout-header",
+        title:
+          "Recommended adjustments for all students registered with the ADRC",
+      },
+
+      generalRecommendations: {
+        class: "general-recommendations-section",
+        content: `Timetables and assignment deadlines provided in advance prior to the start of each term.
+
+                Directed Reading lists provided in advance.
+                
+                Copies of slides, handouts and notes available at least 24 hours in advance and in an accessible format.
+                
+                Access to recordings of teaching sessions made by the department. If no recordings have been made, alternative provision is required and must be communicated to the student.
+                
+                Extended deadlines when feasible and applied for in line with departmental arrangements.`,
+      },
+
+      specificRecommendationsHeader: {
+        class: "layout-header",
+        title: "Recommendations specific to this student",
+      },
+
+      
+
+      largeTeaching: {
+        class: "area for support",
+        title:
+          "Should this student be required to attend any large group teaching or lectures, the following are recommended:",
+        content:
+          "Once selected, support recommendations will automatically be inserted here.",
+      },
+
+      smallTeaching: {
+              class: "area for support",
+              title:
+                "Individual or small group teaching, supervisions (group or 1:1) and seminars",
+              content:
+                "Once selected, support recommendations will automatically be inserted here.",
+            },
+
+      interactiveTeaching: {
+        class: "area for support",
+        title: "School Placement",
+        content:
+          "Once selected, support recommendations will automatically be inserted here.",
+      },
+
+      onlineTeaching: {
+        class: "area for support",
+        title: "Online / blended learning (where relevant)",
+        content:
+          "Once selected, support recommendations will automatically be inserted here.",
+      },
+
+      librarySupport: {
+        class: "area for support",
+        title: "Libraries",
+        content: `The Libraries Accessibility Service is available to assist students registered with the ADRC.
+
+          Once selected, support recommendations will automatically be inserted here.
+                
+          <ul>
+            <li>Upgraded Library Status (including Increased Borrowing Limit and Extended Loans as applicable in each library).</li>
+          </ul>`,
+      },
+
+      college: {
+        class: "area for support",
+        title: "College Adjustments",
+        content:
+          "Decisions related to accommodation are the responsibility of individual colleges and accommodation adjustments should be discussed directly with the student.",
+      },
+
+      exams: {
+        class: "area for support",
+        title: "Examination and Assessments",
+        content: `It is assumed that this student will not be required to sit formal timed exams, but may need to request extensions to coursework submission dates.
+
+                <strong> Presentations & Oral Assessments: </strong>
+                  
+                Once selected, support recommendations will automatically be inserted here.
+                
+                              
+                <p>This information is for advisory purposes only and does not constitute an application for examination access arrangements.</p>`,
+      },
+
+      physical: {
+        class: "area for support",
+        title: "Physical Adjustments",
+        content:
+          "Once selected, support recommendations will automatically be inserted here.",
+      },
+
+      NMHSupport: {
+        class: "area for support",
+        title: "ADRC",
+        content:
+          "Once selected, support recommendations will automatically be inserted here.",
+      },
+
+      evidence: {
+        class: "area for support",
+        title: "Evidence",
+        content:
+          "Acceptable medical/diagnostic evidence has been received by the ADRC",
+      },
+
+      disclosure: {
+        class: "area for support",
+        title: "Disclosure Status",
+        content:
+          "Once selected, the disclosure level will automatically be inserted into this section.",
+      },
+
+      dateApproved: {
+        class: "area for support",
+        title: "Last updated/reviewed by student: ",
+      },
+
+      version: {
+        class: "area for support",
+        title: "Version: ",
+      },
+    },
+  },  
 };
