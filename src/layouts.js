@@ -299,7 +299,7 @@ export const layouts = {
                 "Once selected, support recommendations will automatically be inserted here.",
             },
 
-      interactiveTeaching: {
+      schoolPlacement: {
         class: "area for support",
         title: "School Placement",
         content:
@@ -337,7 +337,7 @@ export const layouts = {
         title: "Examination and Assessments",
         content: `It is assumed that this student will not be required to sit formal timed exams, but may need to request extensions to coursework submission dates.
 
-                <strong> Presentations & Oral Assessments: </strong>
+                <p><strong> Presentations & Oral Assessments: </strong></p>
                   
                 Once selected, support recommendations will automatically be inserted here.
                 

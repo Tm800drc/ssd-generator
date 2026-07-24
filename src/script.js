@@ -8,12 +8,14 @@ import { layouts } from "./layouts.js";
 
 const state = {
   studyMethod: null,
+  subjectTemplate: null,
   disclosure: null,
   disabilities: [],
   selectedSupportIds: new Set(),
 };
 
 const methodInputs = document.querySelectorAll('input[name="method"]');
+const subjectInputs = document.querySelectorAll('input[name="subject"]');
 const disclosureInputs = document.querySelectorAll('input[name="disclosure"]');
 const disabilityInputs = document.querySelectorAll('input[name="disability"]');
 const supportOptionsContainer = document.getElementById("support-options");
@@ -46,6 +48,14 @@ methodRadios.forEach((radio) => {
   });
 });
 
+subjectInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    state.subjectTemplate = input.checked ? input.value : null;
+    handleStateUpdate();
+    console.log("Subject template:", state.subjectTemplate); // Delete before launch
+  });
+});
+
 disclosureInputs.forEach((input) => {
   input.addEventListener("change", () => {
     state.disclosure = input.value;
@@ -68,6 +78,29 @@ disabilityInputs.forEach((input) => {
     console.log("Disabilities:", state.disabilities); // Delete before launch
   });
 });
+
+function getActiveLayoutKey() {
+  if (state.subjectTemplate && layouts[state.subjectTemplate]) {
+    return state.subjectTemplate;
+  }
+
+  return state.studyMethod;
+}
+
+function getVisibleSupportOptions() {
+  return supportOptions.filter((option) => {
+    const matchesStudyMethod = option.studyMethods?.includes(state.studyMethod);
+    const matchesDisability = option.categories?.some((category) =>
+      state.disabilities.includes(category)
+    );
+    const hasSubjectRestriction = Array.isArray(option.subjectAreas) && option.subjectAreas.length > 0;
+    const matchesSubjectArea =
+      !hasSubjectRestriction ||
+      (!!state.subjectTemplate && option.subjectAreas.includes(state.subjectTemplate));
+
+    return matchesStudyMethod && matchesDisability && matchesSubjectArea;
+  });
+}
 
 function handleStateUpdate() {
   console.log("State updated:", state); // Delete before launch
@@ -94,13 +127,7 @@ function renderSupportOptions() {
 
   console.log("Ready to filter support options..."); // Delete before launch
 
-  const filteredOptions = supportOptions.filter((option) => {
-    const matchesStudyMethod = option.studyMethods.includes(state.studyMethod);
-    const matchesDisability = option.categories.some((category) =>
-      state.disabilities.includes(category)
-    );
-    return matchesStudyMethod && matchesDisability;
-  });
+  const filteredOptions = getVisibleSupportOptions();
 
   const groupedOptions = {};
 
@@ -269,8 +296,11 @@ function renderPreview() {
 
   if (!state.studyMethod) return;
 
-  const layout = layouts[state.studyMethod];
-  const selectedOptions = supportOptions.filter((opt) =>
+  const layoutKey = getActiveLayoutKey();
+  const layout = layouts[layoutKey];
+  if (!layout) return;
+  const visibleOptions = getVisibleSupportOptions();
+  const selectedOptions = visibleOptions.filter((opt) =>
     state.selectedSupportIds.has(opt.id)
   );
   document.querySelector(".preview-paper").classList.remove("preview-empty");
@@ -361,4 +391,4 @@ function renderPreview() {
   }
 }); */
 
-export { state };
+export { state, getActiveLayoutKey, getVisibleSupportOptions };

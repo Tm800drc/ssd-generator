@@ -20,7 +20,7 @@ import {
 import { layouts } from "./layouts.js";
 import { supportOptions } from "./supportOptions.js";
 import { disclosureLevels } from "./disclosureLevels.js";
-import { state } from "./script.js";
+import { state, getActiveLayoutKey, getVisibleSupportOptions } from "./script.js";
 
 const skipNoneIdentified = ["exams", "interactiveTeaching", "librarySupport"];
 const DISCLOSURE_PLACEHOLDER =
@@ -231,10 +231,13 @@ function formatDownloadDate() {
 }
 
 async function generateDocx() {
-  const layout = layouts[state.studyMethod];
+  const layoutKey = getActiveLayoutKey();
+  const layout = layouts[layoutKey];
+  if (!layout) return;
   const selectedMap = {};
+  const visibleOptions = getVisibleSupportOptions();
 
-  for (const opt of supportOptions) {
+  for (const opt of visibleOptions) {
     const hasContent = opt.text?.trim() || Array.isArray(opt.structuredText);
     if (state.selectedSupportIds.has(opt.id) && hasContent) {
       if (!selectedMap[opt.targetSection]) selectedMap[opt.targetSection] = [];
