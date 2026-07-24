@@ -156,6 +156,169 @@ export const supportOptions = [
   },
 
   {
+    id: "goals_expectations",
+    pgceOnly: true,
+    label: "(PGCE only) Clear goals and expectations.",
+    text: "Goals and expectations should be clearly outlined and provided in written format.",
+    categories: ["51-ADHD", "53", "57", "54", "55", "56", "51", "58"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "planning_guidance",
+    pgceOnly: true,
+    label: "(PGCE only) Additional time and guidance for lesson planning and evaluation.",
+    text: "Additional time and guidance for lesson planning and evaluation.",
+    categories: ["51-ADHD", "53", "57", "54", "55", "56", "51", "58"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "laptop_in_school",
+    pgceOnly: true,
+    label: "(PGCE only) Use of own laptop in school.",
+    text: "This student may need to use their own laptop on school premises to aid with organisation by keeping all resources in one place.  Where this is not be possible, depending on individual school placement computer use policies and or networking issues, they would benefit from permission to use a USB stick to transfer information back and forth.",
+    categories: ["51-ADHD", "53", "57", "54", "55", "56", "51", "58"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "advance_placement_location",
+    pgceOnly: true,
+    label: "(PGCE only) Placement location in advance.",
+    text: " Placement locations to be shared well in advance, where possible, to allow time to plan travel and become more familiar with the environment.",
+    categories: ["53", "56"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "advance_placement_information",
+    pgceOnly: true,
+    label: "(PGCE only) Placement location, key contacts and expectations in advance.",
+    text: "The student will benefit from early access to information about their placement location, key contacts and expectations so they can prepare.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "visit_placement_in_advance",
+    pgceOnly: true,
+    class: "enhanced-adjustment",
+    label: "(PGCE only) Visit the placement venue in advance.",
+    text: "The student may benefit from visiting the placement venue in advance to familiarise themselves.",
+    categories: ["53", "58"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "written_protocols",
+    pgceOnly: true,
+    label: "(PGCE only) Processes and protocols to be provided in writing.",
+    text: "Processes and protocols to be provided in writing.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "written_expectations",
+    pgceOnly: true,
+    label: "(PGCE only) Written plans, goals and expectations for placement.",
+    text: "Plans, goals and expectations of the placement to be communicated clearly and provided in writing in advance where possible.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "written_protocols",
+    pgceOnly: true,
+    class: "enhanced-adjustment",
+    label: "(PGCE only) Processes and protocols to be provided in writing.",
+    text: "Processes and protocols to be provided in writing.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "earplugs",
+    pgceOnly: true,
+    label: "(PGCE only) This student may need to wear earplugs in noisy environments.",
+    text: "This student may need to wear earplugs in noisy environments.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "quiet_space",
+    pgceOnly: true,
+    label: "(PGCE only) Access to quiet space between teaching.",
+    text: "The student would benefit from access to a quiet space to work in, and to use to decompress and prepare, between their teaching commitments.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "regular_checkins",
+    pgceOnly: true,
+    label: "(PGCE only) Regular check-ins with school mentor.",
+    text: "This student would benefit from regular check ins with her school mentor to ensure that any areas of difficulty can be discussed.",
+    categories: ["53"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "accessable_classroom",
+    pgceOnly: true,
+    label: "(PGCE only) Ground floor/lift accessible classroom.",
+    text: "Where possible classroom access on the ground floor or via a lift.",
+    categories: ["56"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  {
+    id: "close_placement",
+    pgceOnly: true,
+    class: "enhanced-adjustment",
+    label: "(PGCE only) School placement close to Cambridge.",
+    text: "Student requesting a school placement as close to Cambridge as possible.",
+    categories: ["51-ADHD","53", "57", "54", "55", "56", "51", "58"],
+    studyMethods: ["Research"],
+    targetSection: "schoolPlacement",
+  },
+
+  /* {
+    id: "repeat_questions",
+    pgceOnly: true,
+    label: "(PGCE only) Be prepared to repeat or rephrase questions.",
+    text: "Being prepared to repeat or rephrase a question if the student asks for this.",
+    categories: ["53", "51-ADHD"],
+    studyMethods: ["Research"],
+    targetSection: "exams", 
+  },*/
+
+  /*{
+    id: "planning_time",
+    pgceOnly: true,
+    label: "(PGCE only) Give time to plan and organise ideas.",
+    text: "Giving the student time to plan their ideas and organise how they want to explain them.",
+    categories: ["53", "51-ADHD"],
+    studyMethods: ["Research"],
+    targetSection: "exams",
+  }, */
+
+  {
     id: "accessible_venue",
     class: "enhanced-adjustment",
     label: "Exams in an accessible venue close to accommodation.",
