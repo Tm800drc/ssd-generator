@@ -20,7 +20,7 @@ import {
 import { layouts } from "./layouts.js";
 import { supportOptions } from "./supportOptions.js";
 import { disclosureLevels } from "./disclosureLevels.js";
-import { state, getActiveLayoutKey, getVisibleSupportOptions } from "./script.js";
+import { state, getActiveLayoutKey } from "./script.js";
 
 const skipNoneIdentified = ["exams", "interactiveTeaching", "librarySupport"];
 const DISCLOSURE_PLACEHOLDER =
@@ -235,11 +235,26 @@ async function generateDocx() {
   const layout = layouts[layoutKey];
   if (!layout) return;
   const selectedMap = {};
-  const visibleOptions = getVisibleSupportOptions();
 
-  for (const opt of visibleOptions) {
+  for (const opt of supportOptions) {
     const hasContent = opt.text?.trim() || Array.isArray(opt.structuredText);
-    if (state.selectedSupportIds.has(opt.id) && hasContent) {
+    const matchesStudyMethod = opt.studyMethods?.includes(state.studyMethod);
+    const matchesDisability = opt.categories?.some((category) =>
+      state.disabilities.includes(category)
+    );
+    const hasSubjectRestriction =
+      Array.isArray(opt.subjectAreas) && opt.subjectAreas.length > 0;
+    const matchesSubjectArea =
+      !hasSubjectRestriction ||
+      (!!state.subjectTemplate && opt.subjectAreas.includes(state.subjectTemplate));
+
+    if (
+      state.selectedSupportIds.has(opt.id) &&
+      hasContent &&
+      matchesStudyMethod &&
+      matchesDisability &&
+      matchesSubjectArea
+    ) {
       if (!selectedMap[opt.targetSection]) selectedMap[opt.targetSection] = [];
       selectedMap[opt.targetSection].push(opt);
     }

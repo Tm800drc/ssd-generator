@@ -52,7 +52,6 @@ subjectInputs.forEach((input) => {
   input.addEventListener("change", () => {
     state.subjectTemplate = input.checked ? input.value : null;
     handleStateUpdate();
-    console.log("Subject template:", state.subjectTemplate); // Delete before launch
   });
 });
 
@@ -60,7 +59,6 @@ disclosureInputs.forEach((input) => {
   input.addEventListener("change", () => {
     state.disclosure = input.value;
     handleStateUpdate();
-    console.log("Disclosure level:", state.disclosure); // Delete before launch
   });
 });
 
@@ -75,7 +73,6 @@ disabilityInputs.forEach((input) => {
       state.disabilities = state.disabilities.filter((d) => d !== value);
     }
     handleStateUpdate();
-    console.log("Disabilities:", state.disabilities); // Delete before launch
   });
 });
 
@@ -87,23 +84,7 @@ function getActiveLayoutKey() {
   return state.studyMethod;
 }
 
-function getVisibleSupportOptions() {
-  return supportOptions.filter((option) => {
-    const matchesStudyMethod = option.studyMethods?.includes(state.studyMethod);
-    const matchesDisability = option.categories?.some((category) =>
-      state.disabilities.includes(category)
-    );
-    const hasSubjectRestriction = Array.isArray(option.subjectAreas) && option.subjectAreas.length > 0;
-    const matchesSubjectArea =
-      !hasSubjectRestriction ||
-      (!!state.subjectTemplate && option.subjectAreas.includes(state.subjectTemplate));
-
-    return matchesStudyMethod && matchesDisability && matchesSubjectArea;
-  });
-}
-
 function handleStateUpdate() {
-  console.log("State updated:", state); // Delete before launch
   renderSupportOptions();
   renderPreview();
 }
@@ -116,18 +97,34 @@ function renderSupportOptions() {
   // Show or hide support section based on selection
   if (state.disabilities.length === 0) {
     supportOptionsSection.style.display = "none";
-    return; // don't render anything if nothing selected
+    return;
   } else {
     supportOptionsSection.style.display = "block";
   }
 
   if (!state.studyMethod || state.disabilities.length === 0) {
-    return; // No support options to render if study method or disclosure is not selected
+    return; 
   }
 
-  console.log("Ready to filter support options..."); // Delete before launch
+  const filteredOptions = supportOptions.filter((option) => {
+  const matchesStudyMethod =
+    option.studyMethods.includes(state.studyMethod);
 
-  const filteredOptions = getVisibleSupportOptions();
+  const matchesDisability =
+    option.categories.some((category) =>
+      state.disabilities.includes(category)
+    );
+
+  const matchesSubject =
+    !Array.isArray(option.subjectAreas) ||
+    option.subjectAreas.includes(state.subjectTemplate);
+
+  return (
+    matchesStudyMethod &&
+    matchesDisability &&
+    matchesSubject
+  );
+});
 
   const groupedOptions = {};
 
@@ -299,8 +296,7 @@ function renderPreview() {
   const layoutKey = getActiveLayoutKey();
   const layout = layouts[layoutKey];
   if (!layout) return;
-  const visibleOptions = getVisibleSupportOptions();
-  const selectedOptions = visibleOptions.filter((opt) =>
+  const selectedOptions = supportOptions.filter((opt) =>
     state.selectedSupportIds.has(opt.id)
   );
   document.querySelector(".preview-paper").classList.remove("preview-empty");
@@ -391,4 +387,4 @@ function renderPreview() {
   }
 }); */
 
-export { state, getActiveLayoutKey, getVisibleSupportOptions };
+export { state, getActiveLayoutKey };
