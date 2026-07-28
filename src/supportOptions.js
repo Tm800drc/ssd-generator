@@ -271,7 +271,7 @@ export const supportOptions = [
     id: "regular_checkins",
     subjectAreas: ["PGCE"],
     label: "Regular check-ins with school mentor.",
-    text: "This student would benefit from regular check ins with her school mentor to ensure that any areas of difficulty can be discussed.",
+    text: "This student would benefit from regular check ins with their school mentor to ensure that any areas of difficulty can be discussed.",
     categories: ["53"],
     studyMethods: ["Research", "Taught"],
     targetSection: "schoolPlacement",
