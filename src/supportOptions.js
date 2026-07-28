@@ -216,17 +216,7 @@ export const supportOptions = [
     targetSection: "schoolPlacement",
   },
 
-  {
-    id: "written_protocols",
-    subjectAreas: ["PGCE"],
-    label: "Processes and protocols to be provided in writing.",
-    text: "Processes and protocols to be provided in writing.",
-    categories: ["53"],
-    studyMethods: ["Research", "Taught"],
-    targetSection: "schoolPlacement",
-  },
-
-  {
+    {
     id: "written_expectations",
     subjectAreas: ["PGCE"],
     label: "Written plans, goals and expectations for placement.",
