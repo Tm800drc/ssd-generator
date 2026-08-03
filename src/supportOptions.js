@@ -1002,7 +1002,7 @@ export const supportOptions = [
     label:
       "(For small group teaching) Student may be unable to attend, or need a short break, from some sessions.",
     text: "There may be times when the student is unable to attend a session for disability-related reasons or may need to take a short break during a session and may need to clarify work missed.",
-    categories: ["56"],
+    categories: ["56", "55", "54"],
     studyMethods: ["Taught", "Research"],
     targetSection: "smallTeaching",
   },
